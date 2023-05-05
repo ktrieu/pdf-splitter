@@ -4,9 +4,10 @@ A small utility to split PDFs on a list of page numbers. I'm sure this already e
 
 ## Usage
 
-`pdf-spliiter.py [pdf] [pages]`
-`pages` is comma separated list of pages to split at, e.g. (23,45,..).
-By default a split page will be included in the FIRST PDF. Suffix the page number with `!` to include it in both.
+`pdf-splitter.py [pdf] [pages]`
+
+`pages` is a comma separated list of pages to split at, e.g. (23,45,..).
+By default a split page will be included in the _first_ PDF. Suffix the page number with `!` to include it in both.
 
 ## Dependencies
 
