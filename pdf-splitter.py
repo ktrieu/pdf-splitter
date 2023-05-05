@@ -4,7 +4,7 @@ import pypdf
 
 
 def usage(name):
-    print(f"{name} [pdf] [pages]")
+    print(f"{name} pdf pages [out_dir]")
     print("pages: A comma separated list of pages to split at, e.g. (23,45,..).")
     print(
         "  By default a split page will be included in the FIRST PDF. Suffix the page number with `!` to include it in both."
@@ -63,23 +63,23 @@ def get_segments(splits, num_pages):
     return segments
 
 
-def write_segments(segments, out_filename, in_pdf):
+def write_segments(segments, out_path, out_filename, in_pdf):
     out_number = 1
     for start, end in segments:
         out_pdf = pypdf.PdfWriter()
         for p in range(start, end + 1):
             out_pdf.add_page(in_pdf.pages[p])
-        out_pdf.write(f"{out_filename}_{out_number}.pdf")
+        out_pdf.write(os.path.join(out_path, f"{out_filename}_{out_number}.pdf"))
         out_number += 1
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print(f"{len(sys.argv) - 1} arguments found, 1 expected.")
         usage(sys.argv[0])
         sys.exit(1)
 
-    pages = sys.argv[2]
+    pages = sys.argv[3]
     try:
         splits = parse_page_splits(pages)
     except ValueError as e:
@@ -95,5 +95,6 @@ if __name__ == "__main__":
         print(e)
         sys.exit(1)
 
+    out_path = sys.argv[2]
     out_filename = os.path.splitext(os.path.basename(in_path))[0]
-    write_segments(segments, out_filename, in_pdf)
+    write_segments(segments, out_path, out_filename, in_pdf)
